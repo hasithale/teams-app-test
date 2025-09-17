@@ -2,16 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Send Message</title>
+  <title>Webhook Test</title>
 </head>
 <body>
-  <h2>Send to Webhook</h2>
+  <h2>Send Data to Webhook.site</h2>
+  <input id="msg" type="text" placeholder="Enter a message" />
+  <button onclick="sendData()">Send</button>
 
-  <form action="https://webhook.site/5ae6316b-e674-4ae0-805b-9b7d7ae481a7" method="POST">
-    <label for="message">Enter Message:</label><br><br>
-    <input type="text" id="message" name="message" style="width:300px;"><br><br>
-    <button type="submit">Send</button>
-  </form>
+  <script>
+  function sendData() {
+    const message = document.getElementById("msg").value;
+
+    fetch("https://webhook.site/5ae6316b-e674-4ae0-805b-9b7d7ae481a7", {
+      method: "POST",
+      body: JSON.stringify({
+          name: "Hasithe",
+          role: "Developer",
+          message: message
+        })
+    })
+    .then(res => console.log("Sent! Status:", res.status))
+    .catch(err => console.error("Error:", err));
+  }
+</script>
 
 </body>
 </html>
