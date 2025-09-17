@@ -2,35 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Webhook Test</title>
-  <script src="https://res.cdn.office.net/teams-js/2.0.0/js/MicrosoftTeams.min.js"></script>
+  <title>Send Message</title>
 </head>
 <body>
-  <h2>Send Data to Webhook.site</h2>
-  <input id="msg" type="text" placeholder="Enter a message" />
-  <button onclick="sendData()">Send</button>
+  <h2>Send to Webhook</h2>
 
-  <script>
-  function sendData() {
-    const message = document.getElementById("msg").value;
-    microsoftTeams.app.initialize();
-
-    // Get Teams user context
-    microsoftTeams.app.getContext().then(context => {
-        const userEmail = context.user.userPrincipalName;
-    });
-
-    fetch("https://webhook.site/5ae6316b-e674-4ae0-805b-9b7d7ae481a7", {
-      method: "POST",
-      body: JSON.stringify({
-          user: userEmail,
-          message: message
-        })
-    })
-    .then(res => console.log("Sent! Status:", res.status))
-    .catch(err => console.error("Error:", err));
-  }
-</script>
+  <form action="https://webhook.site/5ae6316b-e674-4ae0-805b-9b7d7ae481a7" method="POST">
+    <label for="message">Enter Message:</label><br><br>
+    <input type="text" id="message" name="message" style="width:300px;"><br><br>
+    <button type="submit">Send</button>
+  </form>
 
 </body>
 </html>
