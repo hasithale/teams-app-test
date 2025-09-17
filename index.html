@@ -1,9 +1,42 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <title>Teams Webhook Tab</title>
+  <script src="https://res.cdn.office.net/teams-js/2.0.0/js/MicrosoftTeams.min.js"></script>
+</head>
 <body>
-  <form action="https://webhook.site/5ae6316b-e674-4ae0-805b-9b7d7ae481a7" method="POST">
-    <input type="text" name="message" placeholder="Enter a message" />
-    <button type="submit">Send</button>
-  </form>
+  <h2>Send to Webhook</h2>
+  <input type="text" id="messageBox" placeholder="Enter message..." />
+  <button id="sendBtn">Send</button>
+
+  <script>
+    // Initialize Teams SDK
+    microsoftTeams.app.initialize();
+
+    document.getElementById("sendBtn").onclick = async () => {
+      try {
+        // Get Teams user context
+        const context = await microsoftTeams.app.getContext();
+
+        const userEmail = context.user.userPrincipalName; 
+        const message = document.getElementById("messageBox").value;
+
+        // Send to your webhook
+        await fetch("https://webhook.site/5ae6316b-e674-4ae0-805b-9b7d7ae481a7", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user: userEmail,
+            message: message
+          })
+        });
+
+        alert("Sent to webhook!");
+      } catch (err) {
+        console.error(err);
+        alert("Error: " + err.message);
+      }
+    };
+  </script>
 </body>
 </html>
