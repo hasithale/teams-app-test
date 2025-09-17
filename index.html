@@ -1,42 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Teams Webhook Tab</title>
+  <meta charset="UTF-8">
+  <title>Webhook Test</title>
   <script src="https://res.cdn.office.net/teams-js/2.0.0/js/MicrosoftTeams.min.js"></script>
 </head>
 <body>
-  <h2>Send to Webhook</h2>
-  <input type="text" id="messageBox" placeholder="Enter message..." />
-  <button id="sendBtn">Send</button>
+  <h2>Send Data to Webhook.site</h2>
+  <input id="msg" type="text" placeholder="Enter a message" />
+  <button onclick="sendData()">Send</button>
 
   <script>
-    // Initialize Teams SDK
+  function sendData() {
+    const message = document.getElementById("msg").value;
     microsoftTeams.app.initialize();
 
-    document.getElementById("sendBtn").onclick = async () => {
-      try {
-        // Get Teams user context
-        const context = await microsoftTeams.app.getContext();
+    // Get Teams user context
+    microsoftTeams.app.getContext().then(context => {
+        const userEmail = context.user.userPrincipalName;
+    });
 
-        const userEmail = context.user.userPrincipalName; 
-        const message = document.getElementById("messageBox").value;
+    fetch("https://webhook.site/5ae6316b-e674-4ae0-805b-9b7d7ae481a7", {
+      method: "POST",
+      body: JSON.stringify({
+          user: userEmail,
+          message: message
+        })
+    })
+    .then(res => console.log("Sent! Status:", res.status))
+    .catch(err => console.error("Error:", err));
+  }
+</script>
 
-        // Send to your webhook
-        await fetch("https://webhook.site/5ae6316b-e674-4ae0-805b-9b7d7ae481a7", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            user: userEmail,
-            message: message
-          })
-        });
-
-        alert("Sent to webhook!");
-      } catch (err) {
-        console.error(err);
-        alert("Error: " + err.message);
-      }
-    };
-  </script>
 </body>
 </html>
